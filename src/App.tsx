@@ -1,25 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
+import { DragDropContext } from 'react-beautiful-dnd';
+
 import './App.css';
+import ActionTypeList from './components/ActionTypeList';
+import ActionList from './components/ActionList';
+import Data from './components/Data';
+import { useDispatch } from 'react-redux';
+import { move } from './redux/actions';
 
 function App() {
+  const dispatch = useDispatch();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <DragDropContext
+      onDragEnd={e =>
+        e.destination &&
+        dispatch(
+          move({ sourceIdx: e.source.index, targetIdx: e.destination?.index })
+        )
+      }
+    >
+      <div className='App'>
+        <ActionTypeList />
+        <ActionList />
+        <Data />
+      </div>
+    </DragDropContext>
   );
 }
 
