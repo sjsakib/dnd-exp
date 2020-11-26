@@ -1,7 +1,10 @@
 .action-tile {
-  height: 2rem;
   padding: 1rem;
   border: 1px solid #666;
+  margin-bottom: 0.5rem;
+  display: flex;
+}
 
-  margin-bottom: .5rem;
+.action-tile .action-tile__anchor {
+  margin-right: 0.5rem;
 }
