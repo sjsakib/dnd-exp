@@ -1,9 +1,10 @@
 import React from 'react';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { FaHandPaper } from 'react-icons/fa';
 
 import './styles.css';
 import { Action } from '../../redux/actions';
+import Arrow from './Arrow';
 
 interface ActionTileProps {
   action: Action;
@@ -17,18 +18,34 @@ export default function ActionTile({ action, index }: ActionTileProps) {
       draggableId={action.id}
       index={index}
     >
-      {provided => {
+      {providedDrag => {
         return (
-          <div
-            className='action-tile'
-            {...provided.draggableProps}
-            ref={provided.innerRef}
+          <Droppable
+            isDropDisabled={action.type === 'pagination'}
+            droppableId={action.id}
+            type='arrows'
           >
-            <div className='action-tile__anchor' {...provided.dragHandleProps}>
-              <FaHandPaper />
-            </div>
-            {action.type}
-          </div>
+            {providedDrop => (
+              <div ref={providedDrop.innerRef} {...providedDrop.droppableProps}>
+                <div
+                  className='action-tile'
+                  {...providedDrag.draggableProps}
+                  ref={providedDrag.innerRef}
+                >
+                  {action.type === 'pagination' && (
+                    <Arrow id={`arrow-${action.id}`} index={index} />
+                  )}
+                  <div
+                    className='action-tile__anchor'
+                    {...providedDrag.dragHandleProps}
+                  >
+                    <FaHandPaper />
+                  </div>
+                  {action.type}
+                </div>
+              </div>
+            )}
+          </Droppable>
         );
       }}
     </Draggable>
